@@ -53,15 +53,11 @@ module Map::MapHelper
       summary:  doc.summary,
       }
 
-    if Page.mobile?
-      contents[:title_link]
-    else
-      doc_style.gsub(/@\w+@/, {
-        '@title_link@' => contents[:title_link],
-        '@title@'    => contents[:title],
-        '@subtitle@' => contents[:subtitle],
-        '@summary@'  => contents[:summary],
-      }).html_safe
-    end
+    doc_style.gsub(/@\w+@/, {
+      '@title_link@' => contents[:title_link],
+      '@title@'    => contents[:title],
+      '@subtitle@' => contents[:subtitle],
+      '@summary@'  => contents[:summary],
+    }).html_safe
   end
 end
