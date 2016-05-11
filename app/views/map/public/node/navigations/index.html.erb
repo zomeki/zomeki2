@@ -3,7 +3,11 @@
 %><div class="contentMapNavigations">
   <div id="canvas" style="height: 350px; width: 100%;"></div>
 
+  <%- if api_key.present? -%>
   <%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?key=' + api_key + '&region=jp' %>
+  <%- else -%>
+  <%= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?region=jp' %>
+  <%- end -%>
   <%= javascript_include_tag '/_common/modules/map/js/navigations.js' %>
   <%= javascript_tag do %>
 (function($) {
