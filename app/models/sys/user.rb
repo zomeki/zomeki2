@@ -9,14 +9,15 @@ class Sys::User < ActiveRecord::Base
   include StateText
 
   has_many :users_groups, :foreign_key => :user_id,
-    :class_name => 'Sys::UsersGroup'
+    :class_name => 'Sys::UsersGroup', :dependent => :destroy
   has_many :groups, :through => :users_groups,
     :source => :group
   has_many :users_roles, :foreign_key => :user_id,
-    :class_name => 'Sys::UsersRole'
+    :class_name => 'Sys::UsersRole', :dependent => :destroy
   has_many :role_names, :through => :users_roles,
     :source => :role_name
   has_many :operation_logs, :class_name => 'Sys::OperationLog'
+  has_many :gp_article_holds, :class_name => 'GpArticle::Hold', :dependent => :destroy
 
   attr_accessor :in_group_id
 
