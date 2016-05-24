@@ -171,14 +171,14 @@ class Cms::Site < ActiveRecord::Base
       next unless ::File.exist?(site.config_path + "/rewrite.conf")
 
       domain = site.domain
-      next unless domain.to_s =~ /^[1-9a-z\.\-\_]+$/i
+      next unless domain.to_s =~ /^[0-9a-z\.\-\_]+$/i
 
       conf.concat(<<-EOT)
 <VirtualHost *:80>
     ServerName #{domain}
       EOT
 
-      if (md = site.mobile_domain).to_s =~ /^[1-9a-z\.\-\_]+$/i
+      if (md = site.mobile_domain).to_s =~ /^[0-9a-z\.\-\_]+$/i
         conf.concat(<<-EOT)
     ServerAlias #{md}
     SetEnvIf Host #{Regexp.quote(md)} MOBILE_SITE
