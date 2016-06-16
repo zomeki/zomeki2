@@ -79,7 +79,7 @@ class Cms::Controller::Script::Publication < ApplicationController
       ruby = true
     elsif !::File.exist?(path)
       ruby = true
-    elsif ::File.stat(path).mtime < Cms::KanaDictionary.dic_mtime
+    elsif ::File.stat(path).mtime < Cms::KanaDictionary.dic_mtime(site.id)
       ruby = true
     end
 
