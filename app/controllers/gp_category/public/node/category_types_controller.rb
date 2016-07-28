@@ -36,15 +36,16 @@ class GpCategory::Public::Node::CategoryTypesController < GpCategory::Public::No
                 tags << vc.content_tag(:section, class: category_type.name) do
 
                     if request.mobile?
-                      title_tag = vc.content_tag(:div, class: 'h2') do
-                         category_type.title
+                      html = vc.content_tag(:h2) do
+                        vc.link_to(category_type.title, category_type.public_uri)
                       end
+                      html << vc.content_tag(:span, category_type.description, class: 'category_summary') if category_type.description.present?
                     else
                       title_tag = vc.content_tag(:h2, category_type.title)
+                      title_tag << vc.content_tag(:span, category_type.description, class: 'category_summary') if category_type.description.present?
+                      html = vc.link_to(title_tag, category_type.public_uri)
                     end
 
-                    title_tag << vc.content_tag(:span, category_type.description, class: 'category_summary') if category_type.description.present?
-                    html = vc.link_to(title_tag, category_type.public_uri)
                     html << vc.send(tm.module_type, template_module: tm,
                                     categories: category_type.public_root_categories)
                   end
@@ -156,14 +157,7 @@ class GpCategory::Public::Node::CategoryTypesController < GpCategory::Public::No
               if vc.respond_to?(tm.module_type)
                 @category_type.public_root_categories.inject(''){|tags, category|
                   tags << vc.content_tag(:section, class: category.name) do
-                      if request.mobile?
-                        html = vc.content_tag(:div, class: 'h2') do
-                          vc.link_to(category.title, category.public_uri)
-                        end
-                      else
-                        html = vc.content_tag(:h2, vc.link_to(category.title, category.public_uri))
-                      end
-
+                      html = vc.content_tag(:h2, vc.link_to(category.title, category.public_uri))
                       html << vc.send(tm.module_type, template_module: tm,
                                       categories: category.public_children)
                     end
@@ -175,15 +169,16 @@ class GpCategory::Public::Node::CategoryTypesController < GpCategory::Public::No
                   tags << vc.content_tag(:section, class: category.name) do
 
                       if request.mobile?
-                        title_tag = vc.content_tag(:div, class: 'h2') do
-                           category.title
+                        html = vc.content_tag(:h2) do
+                          vc.link_to(category.title, category.public_uri)
                         end
+                        html << vc.content_tag(:span, category.description, class: 'category_summary') if category.description.present?
                       else
                         title_tag = vc.content_tag(:h2, category.title)
+                        title_tag << vc.content_tag(:span, category.description, class: 'category_summary') if category.description.present?
+                        html = vc.link_to(title_tag, category.public_uri)
                       end
 
-                      title_tag << vc.content_tag(:span, category.description, class: 'category_summary') if category.description.present?
-                      html = vc.link_to(title_tag, category.public_uri)
                       html << vc.send(tm.module_type, template_module: tm,
                                       categories: category.public_children)
                     end

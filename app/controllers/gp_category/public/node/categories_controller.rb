@@ -84,13 +84,7 @@ class GpCategory::Public::Node::CategoriesController < GpCategory::Public::Node:
               if vc.respond_to?(tm.module_type)
                 @category.public_children.inject(''){|tags, child|
                   tags << vc.content_tag(:section, class: child.name) do
-                      if request.mobile?
-                        html = vc.content_tag(:div, class: 'h2') do
-                          vc.link_to(child.title, child.public_uri)
-                        end
-                      else
-                        html = vc.content_tag(:h2, vc.link_to(child.title, child.public_uri))
-                      end
+                      html = vc.content_tag(:h2, vc.link_to(child.title, child.public_uri))
                       html << vc.send(tm.module_type, template_module: tm,
                                       categories: child.public_children)
                     end
@@ -101,15 +95,15 @@ class GpCategory::Public::Node::CategoriesController < GpCategory::Public::Node:
                 @category.public_children.inject(''){|tags, child|
                   tags << vc.content_tag(:section, class: child.name) do
                       if request.mobile?
-                        title_tag = vc.content_tag(:div, class: 'h2') do
-                           child.title
+                        html = vc.content_tag(:h2) do
+                          vc.link_to(child.title, child.public_uri)
                         end
+                        html << vc.content_tag(:span, child.description, class: 'category_summary') if child.description.present?
                       else
                         title_tag = vc.content_tag(:h2, child.title)
+                        title_tag << vc.content_tag(:span, child.description, class: 'category_summary') if child.description.present?
+                        html = vc.link_to(title_tag, child.public_uri)
                       end
-
-                      title_tag << vc.content_tag(:span, child.description, class: 'category_summary') if child.description.present?
-                      html = vc.link_to(title_tag, child.public_uri)
                       html << vc.send(tm.module_type, template_module: tm,
                                       categories: child.public_children)
                     end
