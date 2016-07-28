@@ -101,7 +101,7 @@ class GpCategory::Public::Node::CategoriesController < GpCategory::Public::Node:
                 @category.public_children.inject(''){|tags, child|
                   tags << vc.content_tag(:section, class: child.name) do
                       if request.mobile?
-                        title_tag = content_tag(:div, class: 'h2') do
+                        title_tag = vc.content_tag(:div, class: 'h2') do
                            child.title
                         end
                       else

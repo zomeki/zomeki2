@@ -36,7 +36,7 @@ class GpCategory::Public::Node::CategoryTypesController < GpCategory::Public::No
                 tags << vc.content_tag(:section, class: category_type.name) do
 
                     if request.mobile?
-                      title_tag = content_tag(:div, class: 'h2') do
+                      title_tag = vc.content_tag(:div, class: 'h2') do
                          category_type.title
                       end
                     else
