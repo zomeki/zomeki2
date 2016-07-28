@@ -145,7 +145,14 @@ module GpCategory::GpCategoryHelper
 
             docs = cats.first.categorizable_type.constantize.where(id: cats.pluck(:categorizable_id))
                                                             .limit(template_module.num_docs).order(docs_order)
-            html = content_tag(:h2, category.title)
+            if request.mobile?
+              html = content_tag(:div, class: 'h2') do
+                 category.title
+              end
+            else
+              html = content_tag(:h2, category.title)
+            end
+
             doc_tags = docs.inject(''){|t, d|
                          t << content_tag(template_module.wrapper_tag,
                                           doc_replace(d, template_module.doc_style, @content.date_style, @content.time_style))
@@ -191,8 +198,14 @@ module GpCategory::GpCategoryHelper
         tags << content_tag(:section, class: group.code) do
             docs = docs.where(Sys::Group.arel_table[:id].eq(group.id))
                        .limit(template_module.num_docs).order(docs_order)
+            if request.mobile?
+              html = content_tag(:div, class: 'h2') do
+                 group.name
+              end
+            else
+              html = content_tag(:h2, group.name)
+            end
 
-            html = content_tag(:h2, group.name)
             doc_tags = docs.inject(''){|t, d|
                          t << content_tag(template_module.wrapper_tag,
                                           doc_replace(d, template_module.doc_style, @content.date_style, @content.time_style))
@@ -268,8 +281,14 @@ module GpCategory::GpCategoryHelper
         all_docs = cats.first.categorizable_type.constantize.where(id: cats.pluck(:categorizable_id))
                                                             .order(docs_order)
         docs = all_docs.limit(template_module.num_docs)
+        if request.mobile?
+          html = content_tag(:div, class: 'h2') do
+             category.title
+          end
+        else
+          html = content_tag(:h2, category.title)
+        end
 
-        html = content_tag(:h2, category.title)
         doc_tags = docs.inject(''){|t, d|
                      t << content_tag(template_module.wrapper_tag,
                                       doc_replace(d, template_module.doc_style, @content.date_style, @content.time_style))

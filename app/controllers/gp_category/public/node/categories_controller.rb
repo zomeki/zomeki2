@@ -84,7 +84,13 @@ class GpCategory::Public::Node::CategoriesController < GpCategory::Public::Node:
               if vc.respond_to?(tm.module_type)
                 @category.public_children.inject(''){|tags, child|
                   tags << vc.content_tag(:section, class: child.name) do
-                      html = vc.content_tag(:h2, vc.link_to(child.title, child.public_uri))
+                      if request.mobile?
+                        html = vc.content_tag(:div, class: 'h2') do
+                          vc.link_to(child.title, child.public_uri)
+                        end
+                      else
+                        html = vc.content_tag(:h2, vc.link_to(child.title, child.public_uri))
+                      end
                       html << vc.send(tm.module_type, template_module: tm,
                                       categories: child.public_children)
                     end
@@ -94,7 +100,14 @@ class GpCategory::Public::Node::CategoriesController < GpCategory::Public::Node:
               if vc.respond_to?(tm.module_type)
                 @category.public_children.inject(''){|tags, child|
                   tags << vc.content_tag(:section, class: child.name) do
-                      title_tag = vc.content_tag(:h2, child.title)
+                      if request.mobile?
+                        title_tag = vc.content_tag(:div, class: 'h2') do
+                           child.title
+                        end
+                      else
+                        title_tag = vc.content_tag(:h2, child.title)
+                      end
+
                       title_tag << vc.content_tag(:span, child.description, class: 'category_summary') if child.description.present?
                       html = vc.link_to(title_tag, child.public_uri)
                       html << vc.send(tm.module_type, template_module: tm,
